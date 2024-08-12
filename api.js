@@ -11,12 +11,14 @@ app.get("/api/create-dd-monitor", (req, res) => {
   console.log("DD_APP_KEY", appKey);
   // Construct the monitor payload
   const monitorPayload = {
-    name: "User session alert",
+    name: "session",
     type: "metric alert",
     query:
       "sum(last_5m):sum:datadog.estimated_usage.rum.sessions{*}.as_count() >= 1",
-    message: "Monitor user active sessions",
-    tags: ["env:prod", "team:backend"],
+    message: "@webhook-ServiceDeskPlusWebhook",
+    tags: ["env:stating-1", "team:backend"],
+    notification_channels:
+      "https://sdpondemand.manageengine.com/app/itdesk/executefunction/DataDog?zapikey=1003.245be6703e37732476b21c6341074652.fd2ea03b4ae4d30a7c77d64421815e37",
   };
 
   // Define Datadog API endpoint for creating monitors
@@ -46,6 +48,7 @@ app.get("/api/create-dd-monitor", (req, res) => {
 
 app.post("/api/datadog/webhook", (req, res) => {
   const monitorData = req.body;
+  console.log(monitorData);
   console.log("Received monitor data check:", monitorData);
   res.send(`data received - ${monitorData}`);
 });
